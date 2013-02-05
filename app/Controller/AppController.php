@@ -32,5 +32,12 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $components = array('DebugKit.Toolbar');
+	public $components = array(
+		'DebugKit.Toolbar',
+		'Auth',
+	);
+
+	public function beforeFilter() {
+        $this->Auth->allow('index', 'view', 'add', 'delete'); //whitelist all by default
+    }
 }
