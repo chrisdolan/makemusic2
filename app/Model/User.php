@@ -1,14 +1,7 @@
-enda.odonohoe@gmail.com
-
-
 <?php
-App::uses('AuthComponent','AppModel', 'Model');
-/**
- * User Model
- *
- * @property City $City
- * @property Artist $Artist
- */
+App::uses('AuthComponent','Controller/Component','AppModel', 'Model');
+
+
 class User extends AppModel {
 
 	public $displayField = 'screenname';
@@ -43,7 +36,6 @@ class User extends AppModel {
 				'rule' => array('isClean'), //KeepItCleanBehavior
 				'message' => 'Your screenname must not contain naughty words'
 			)
-
 		)
 	);
 
