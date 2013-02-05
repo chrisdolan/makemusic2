@@ -3,8 +3,9 @@ App::uses('AppModel', 'Model');
 /**
  * Performance Model
  *
- * @property Locations $Locations
- * @property Artists $Artists
+ * @property Location $Location
+ * @property Artist $Artist
+ * @property Timeslot $Timeslot
  */
 class Performance extends AppModel {
 
@@ -17,16 +18,23 @@ class Performance extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Locations' => array(
-			'className' => 'Locations',
-			'foreignKey' => 'locations_id',
+		'Location' => array(
+			'className' => 'Location',
+			'foreignKey' => 'location_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
-		'Artists' => array(
-			'className' => 'Artists',
-			'foreignKey' => 'artists_id',
+		'Artist' => array(
+			'className' => 'Artist',
+			'foreignKey' => 'artist_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Timeslot' => array(
+			'className' => 'Timeslot',
+			'foreignKey' => 'timeslot_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

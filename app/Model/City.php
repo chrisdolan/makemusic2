@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * City Model
  *
+ * @property CityAdmin $CityAdmin
  * @property CityExtdatum $CityExtdatum
  * @property District $District
  * @property Location $Location
@@ -26,6 +27,19 @@ class City extends AppModel {
  * @var array
  */
 	public $hasMany = array(
+		'CityAdmin' => array(
+			'className' => 'CityAdmin',
+			'foreignKey' => 'city_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'CityExtdatum' => array(
 			'className' => 'CityExtdatum',
 			'foreignKey' => 'city_id',

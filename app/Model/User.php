@@ -1,5 +1,8 @@
+enda.odonohoe@gmail.com
+
+
 <?php
-App::uses('AppModel', 'Model');
+App::uses('AuthComponent','AppModel', 'Model');
 /**
  * User Model
  *
@@ -10,7 +13,9 @@ class User extends AppModel {
 
 	public $displayField = 'screenname';
 
+
 	public $actsAs = array('KeepItClean');
+
 
 	public $validate = array(
 		'username' => array(
@@ -42,9 +47,11 @@ class User extends AppModel {
 		)
 	);
 
-
-	public function noBadWords($check) {
-
+	public function beforeSave($options = array()) {
+	    if (isset($this->data[$this->alias]['password'])) {
+	        $this->data[$this->alias]['password'] = AuthComponent::password($this->data[$this->alias]['password']);
+	    }
+	    return true;
 	}
 
 
@@ -62,6 +69,19 @@ class User extends AppModel {
 	public $hasMany = array(
 		'Artist' => array(
 			'className' => 'Artist',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'CityAdmin' => array(
+			'className' => 'CityAdmin',
 			'foreignKey' => 'user_id',
 			'dependent' => false,
 			'conditions' => '',

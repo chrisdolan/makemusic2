@@ -6,6 +6,7 @@ App::uses('AppModel', 'Model');
  * @property User $User
  * @property ArtistGenre $ArtistGenre
  * @property ArtistTimeslot $ArtistTimeslot
+ * @property Performance $Performance
  */
 class Artist extends AppModel {
 
@@ -55,6 +56,19 @@ class Artist extends AppModel {
 		),
 		'ArtistTimeslot' => array(
 			'className' => 'ArtistTimeslot',
+			'foreignKey' => 'artist_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Performance' => array(
+			'className' => 'Performance',
 			'foreignKey' => 'artist_id',
 			'dependent' => false,
 			'conditions' => '',

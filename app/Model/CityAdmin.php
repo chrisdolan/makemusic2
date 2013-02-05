@@ -3,8 +3,8 @@ App::uses('AppModel', 'Model');
 /**
  * CityAdmin Model
  *
- * @property Users $Users
- * @property Cities $Cities
+ * @property User $User
+ * @property City $City
  */
 class CityAdmin extends AppModel {
 
@@ -17,16 +17,16 @@ class CityAdmin extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Users' => array(
-			'className' => 'Users',
-			'foreignKey' => 'users_id',
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
-		'Cities' => array(
-			'className' => 'Cities',
-			'foreignKey' => 'cities_id',
+		'City' => array(
+			'className' => 'City',
+			'foreignKey' => 'city_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
