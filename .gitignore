@@ -1,3 +1,4 @@
+*.swp
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
