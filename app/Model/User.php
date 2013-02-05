@@ -8,21 +8,46 @@ App::uses('AppModel', 'Model');
  */
 class User extends AppModel {
 
-/**
- * Display field
- *
- * @var string
- */
 	public $displayField = 'screenname';
 
+	public $actsAs = array('KeepItClean');
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	public $validate = array(
+		'username' => array(
+			'isEmail' => array(
+				'rule' => 'email',
+				'required' => true,
+				'message' => 'Your username must be a valid email address'
+			),
+			'unique' => array(
+				'rule' => array('isUnique'),
+				'message' => 'Sorry, that email address is already registered'
+			)
+		),
+		'password' => array(
+			'rule' => array('minLength', 8),
+			'message' => 'Your password must be at least 8 characters'
+		),
+		'screenname' => array(
+			'minlength' => array(
+				'rule' => array('minLength', 4),
+				'required' => true,
+				'message' => 'Your screenname must be at least 4 characters long'
+			),
+			'clean' => array(
+				'rule' => array('isClean'), //KeepItCleanBehavior
+				'message' => 'Your screenname must not contain naughty words'
+			)
 
-/**
- * belongsTo associations
- *
- * @var array
- */
+		)
+	);
+
+
+	public function noBadWords($check) {
+
+	}
+
+
 	public $belongsTo = array(
 		'City' => array(
 			'className' => 'City',
@@ -33,11 +58,7 @@ class User extends AppModel {
 		)
 	);
 
-/**
- * hasMany associations
- *
- * @var array
- */
+
 	public $hasMany = array(
 		'Artist' => array(
 			'className' => 'Artist',
