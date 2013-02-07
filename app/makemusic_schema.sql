@@ -23,6 +23,14 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`cities` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `hostname` VARCHAR(254) NOT NULL ,
+  `facebook_url` VARCHAR(254) NULL ,
+  `twitter_url` VARCHAR(254) NULL ,
+  `instagram_url` VARCHAR(254) NULL ,
+  `youtube_url` VARCHAR(254) NULL ,
+  `flickr_url` VARCHAR(254) NULL ,
+  `official_url` VARCHAR(254) NULL ,
+  `performance_cutoff` DATETIME NULL COMMENT 'Last date by which any new Performances may be created for a given City.' ,
+  `homepage_description` LONGTEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -36,10 +44,11 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`users` (
   `city_id` INT(11) NOT NULL ,
   `username` VARCHAR(254) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
+  `is_city_admin` TINYINT(1) NULL ,
   `screenname` VARCHAR(45) NOT NULL ,
   `address` VARCHAR(250) NOT NULL ,
   `phone` VARCHAR(15) NOT NULL ,
-  `contact_preference` TINYINT(1) NULL DEFAULT NULL ,
+  `contact_preference` TINYINT(1) NULL DEFAULT NULL COMMENT 'Whether or not a user will be sent email notifications.' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `index644` (`username` ASC) ,
   UNIQUE INDEX `index645` (`password` ASC) ,
@@ -59,7 +68,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `makingmusic`.`artists` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `user_id` INT(11) NULL DEFAULT NULL ,
+  `user_id` INT(11) NULL ,
   `groupname` VARCHAR(100) NOT NULL ,
   `website` VARCHAR(254) NULL DEFAULT NULL ,
   `facebook` VARCHAR(254) NULL DEFAULT NULL ,
@@ -138,31 +147,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `makingmusic`.`city_admins`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `makingmusic`.`city_admins` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `user_id` INT(11) NOT NULL ,
-  `city_id` INT(11) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `index619` (`city_id` ASC) ,
-  INDEX `index620` (`user_id` ASC) ,
-  INDEX `cities_idx` (`city_id` ASC) ,
-  CONSTRAINT `constraint652`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `makingmusic`.`users` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `cities`
-    FOREIGN KEY (`city_id` )
-    REFERENCES `makingmusic`.`cities` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `makingmusic`.`city_extdata`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `makingmusic`.`city_extdata` (
@@ -219,6 +203,27 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `makingmusic`.`location_types`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`location_types` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NULL ,
+  `description` LONGTEXT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `makingmusic`.`location_electricities`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`location_electricities` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `description` LONGTEXT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `makingmusic`.`locations`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
@@ -226,6 +231,8 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
   `city_id` INT(11) NOT NULL ,
   `admin_user_id` INT(11) NOT NULL ,
   `neighborhood_id` INT(11) NOT NULL ,
+  `location_type_id` INT NOT NULL ,
+  `location_electricity_id` INT NOT NULL ,
   `name` VARCHAR(45) NULL DEFAULT NULL ,
   `address` VARCHAR(250) NOT NULL ,
   `contact_name` VARCHAR(45) NULL DEFAULT NULL ,
@@ -235,10 +242,13 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
   `rain_accommodations` TINYINT(1) NOT NULL ,
   `rain_description` LONGTEXT NOT NULL ,
   `electricity` TINYINT(1) NOT NULL ,
+  `performances_wanted` TINYINT(1) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `index634` (`city_id` ASC) ,
   INDEX `index635` (`admin_user_id` ASC) ,
   INDEX `index636` (`neighborhood_id` ASC) ,
+  INDEX `fk_locations_location_types1_idx` (`location_type_id` ASC) ,
+  INDEX `fk_locations_location_electricities1_idx` (`location_electricity_id` ASC) ,
   CONSTRAINT `constraint659`
     FOREIGN KEY (`city_id` )
     REFERENCES `makingmusic`.`cities` (`id` )
@@ -252,6 +262,16 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
   CONSTRAINT `constraint661`
     FOREIGN KEY (`neighborhood_id` )
     REFERENCES `makingmusic`.`neighborhoods` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_locations_location_types1`
+    FOREIGN KEY (`location_type_id` )
+    REFERENCES `makingmusic`.`location_types` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_locations_location_electricities1`
+    FOREIGN KEY (`location_electricity_id` )
+    REFERENCES `makingmusic`.`location_electricities` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -313,17 +333,17 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`performances` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `location_id` INT(11) NOT NULL ,
   `artist_id` INT(11) NOT NULL ,
-  `timeslot_id` INT(11) NOT NULL ,
   `location_confirmed` TINYINT(1) NULL DEFAULT NULL ,
   `artist_confirmed` TINYINT(1) NULL DEFAULT NULL ,
   `city_confirmed` TINYINT(1) NULL DEFAULT NULL ,
   `description` LONGTEXT NULL DEFAULT NULL ,
   `location_notes` LONGTEXT NOT NULL ,
   `artist_notes` LONGTEXT NOT NULL ,
+  `start_time` DATETIME NULL ,
+  `end_time` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `index640` (`location_id` ASC) ,
   INDEX `index641` (`artist_id` ASC) ,
-  INDEX `fk_performances_timeslots1_idx` (`timeslot_id` ASC) ,
   CONSTRAINT `constraint663`
     FOREIGN KEY (`location_id` )
     REFERENCES `makingmusic`.`locations` (`id` )
@@ -333,14 +353,27 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`performances` (
     FOREIGN KEY (`artist_id` )
     REFERENCES `makingmusic`.`artists` (`id` )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_performances_timeslots1`
-    FOREIGN KEY (`timeslot_id` )
-    REFERENCES `makingmusic`.`timeslots` (`id` )
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `makingmusic`.`city_hours`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`city_hours` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'Each row is a datetime range during which Artists and Locations may book Performances for a given City.' ,
+  `city_id` INT(11) NOT NULL ,
+  `start_time` DATETIME NOT NULL ,
+  `end_time` DATETIME NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_city_hours_cities1_idx` (`city_id` ASC) ,
+  CONSTRAINT `fk_city_hours_cities1`
+    FOREIGN KEY (`city_id` )
+    REFERENCES `makingmusic`.`cities` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 
