@@ -11,6 +11,6 @@ class Timeslot extends AppModel {
  *
  * @var string
  */
-	public $displayField = 'name';
+	public $displayField = 'description';
 
 }

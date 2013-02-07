@@ -4,10 +4,13 @@ App::uses('AppModel', 'Model');
  * Location Model
  *
  * @property City $City
- * @property AdminUser $AdminUser
+ * @property User $User
  * @property Neighborhood $Neighborhood
+ * @property LocationType $LocationType
+ * @property LocationElectricity $LocationElectricity
  * @property LocationGenre $LocationGenre
- * @property LocationTimeslot $LocationTimeslot
+ * @property LocationHour $LocationHour
+ * @property Performance $Performance
  */
 class Location extends AppModel {
 
@@ -34,9 +37,9 @@ class Location extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'AdminUser' => array(
-			'className' => 'AdminUser',
-			'foreignKey' => 'admin_user_id',
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -44,6 +47,20 @@ class Location extends AppModel {
 		'Neighborhood' => array(
 			'className' => 'Neighborhood',
 			'foreignKey' => 'neighborhood_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'LocationType' => array(
+			'className' => 'LocationType',
+			'foreignKey' => 'location_type_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'LocationElectricity' => array(
+			'className' => 'LocationElectricity',
+			'foreignKey' => 'location_electricity_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -69,8 +86,21 @@ class Location extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'LocationTimeslot' => array(
-			'className' => 'LocationTimeslot',
+		'LocationHour' => array(
+			'className' => 'LocationHour',
+			'foreignKey' => 'location_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Performance' => array(
+			'className' => 'Performance',
 			'foreignKey' => 'location_id',
 			'dependent' => false,
 			'conditions' => '',

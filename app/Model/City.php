@@ -3,8 +3,8 @@ App::uses('AppModel', 'Model');
 /**
  * City Model
  *
- * @property CityAdmin $CityAdmin
  * @property CityExtdatum $CityExtdatum
+ * @property CityHour $CityHour
  * @property District $District
  * @property Location $Location
  * @property User $User
@@ -27,8 +27,8 @@ class City extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'CityAdmin' => array(
-			'className' => 'CityAdmin',
+		'CityExtdatum' => array(
+			'className' => 'CityExtdatum',
 			'foreignKey' => 'city_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -40,8 +40,8 @@ class City extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'CityExtdatum' => array(
-			'className' => 'CityExtdatum',
+		'CityHour' => array(
+			'className' => 'CityHour',
 			'foreignKey' => 'city_id',
 			'dependent' => false,
 			'conditions' => '',

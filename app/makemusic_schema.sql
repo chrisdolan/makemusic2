@@ -110,33 +110,16 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `makingmusic`.`timeslots`
+-- Table `makingmusic`.`artist_hours`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `makingmusic`.`timeslots` (
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`artist_hours` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
-  `description` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `makingmusic`.`artist_timeslots`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `makingmusic`.`artist_timeslots` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `timeslot_id` INT(11) NOT NULL ,
   `artist_id` INT(11) NOT NULL ,
+  `start_time` DATETIME NOT NULL ,
+  `end_time` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `index613` (`timeslot_id` ASC) ,
   INDEX `index614` (`artist_id` ASC) ,
   INDEX `timeslots_idx` (`artist_id` ASC) ,
-  CONSTRAINT `constraint650`
-    FOREIGN KEY (`timeslot_id` )
-    REFERENCES `makingmusic`.`timeslots` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `timeslots`
     FOREIGN KEY (`artist_id` )
     REFERENCES `makingmusic`.`artists` (`id` )
@@ -229,7 +212,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `city_id` INT(11) NOT NULL ,
-  `admin_user_id` INT(11) NOT NULL ,
+  `user_id` INT(11) NOT NULL ,
   `neighborhood_id` INT(11) NOT NULL ,
   `location_type_id` INT NOT NULL ,
   `location_electricity_id` INT NOT NULL ,
@@ -245,7 +228,7 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
   `performances_wanted` TINYINT(1) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `index634` (`city_id` ASC) ,
-  INDEX `index635` (`admin_user_id` ASC) ,
+  INDEX `index635` (`user_id` ASC) ,
   INDEX `index636` (`neighborhood_id` ASC) ,
   INDEX `fk_locations_location_types1_idx` (`location_type_id` ASC) ,
   INDEX `fk_locations_location_electricities1_idx` (`location_electricity_id` ASC) ,
@@ -255,7 +238,7 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`locations` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `constraint660`
-    FOREIGN KEY (`admin_user_id` )
+    FOREIGN KEY (`user_id` )
     REFERENCES `makingmusic`.`users` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -303,23 +286,18 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `makingmusic`.`location_timeslots`
+-- Table `makingmusic`.`location_hours`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `makingmusic`.`location_timeslots` (
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`location_hours` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `location_id` INT(11) NOT NULL ,
-  `timeslot_id` INT(11) NOT NULL ,
+  `start_time` DATETIME NOT NULL ,
+  `end_time` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `index631` (`location_id` ASC) ,
-  INDEX `index632` (`timeslot_id` ASC) ,
   CONSTRAINT `constraint657`
     FOREIGN KEY (`location_id` )
     REFERENCES `makingmusic`.`locations` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `constraint658`
-    FOREIGN KEY (`timeslot_id` )
-    REFERENCES `makingmusic`.`timeslots` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -354,6 +332,19 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`performances` (
     REFERENCES `makingmusic`.`artists` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `makingmusic`.`timeslots`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `makingmusic`.`timeslots` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(45) NOT NULL ,
+  `start_time` TIME NOT NULL ,
+  `end_time` TIME NOT NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

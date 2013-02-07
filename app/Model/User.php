@@ -1,14 +1,11 @@
 <?php
 App::uses('AuthComponent','Controller/Component','AppModel', 'Model');
 
-
 class User extends AppModel {
 
 	public $displayField = 'screenname';
 
-
 	public $actsAs = array('KeepItClean');
-
 
 	public $validate = array(
 		'username' => array(
@@ -39,6 +36,7 @@ class User extends AppModel {
 		)
 	);
 
+
 	public function beforeSave($options = array()) {
 	    if (isset($this->data[$this->alias]['password'])) {
 	        $this->data[$this->alias]['password'] = AuthComponent::password($this->data[$this->alias]['password']);
@@ -57,7 +55,6 @@ class User extends AppModel {
 		)
 	);
 
-
 	public $hasMany = array(
 		'Artist' => array(
 			'className' => 'Artist',
@@ -72,8 +69,8 @@ class User extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'CityAdmin' => array(
-			'className' => 'CityAdmin',
+		'Location' => array(
+			'className' => 'Location',
 			'foreignKey' => 'user_id',
 			'dependent' => false,
 			'conditions' => '',

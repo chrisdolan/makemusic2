@@ -5,17 +5,10 @@ App::uses('AppModel', 'Model');
  *
  * @property User $User
  * @property ArtistGenre $ArtistGenre
- * @property ArtistTimeslot $ArtistTimeslot
+ * @property ArtistHour $ArtistHour
  * @property Performance $Performance
  */
 class Artist extends AppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'groupname';
 
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -54,8 +47,8 @@ class Artist extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'ArtistTimeslot' => array(
-			'className' => 'ArtistTimeslot',
+		'ArtistHour' => array(
+			'className' => 'ArtistHour',
 			'foreignKey' => 'artist_id',
 			'dependent' => false,
 			'conditions' => '',
