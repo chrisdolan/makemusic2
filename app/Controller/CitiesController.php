@@ -10,7 +10,7 @@ class CitiesController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-        $this->Auth->allow('home'); //whitelist all by default
+        $this->Auth->allow('home');
     }
 
 
@@ -25,8 +25,13 @@ class CitiesController extends AppController {
 		if (!$this->City->exists($id)) {
 			throw new NotFoundException(__('Invalid city'));
 		}
-		$options = array('conditions' => array('City.' . $this->City->primaryKey => $id));
-		$this->set('city', $this->City->find('first', $options));
+
+		$this->City->contain();
+		$this->set('city', $this->City->find('first', array(
+			'conditions' => array(
+				'City.id' => $id,
+			),
+		)));
 	}
 
 
