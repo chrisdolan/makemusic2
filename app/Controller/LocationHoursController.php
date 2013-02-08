@@ -1,10 +1,10 @@
 <?php
 App::uses('AppController', 'Controller');
 /**
- * CityAdmins Controller
+ * LocationHours Controller
  *
  */
-class CityAdminsController extends AppController {
+class LocationHoursController extends AppController {
 
 /**
  * Scaffold

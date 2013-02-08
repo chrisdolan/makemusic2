@@ -1,12 +1,11 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Performance Model
+ * ArtistHour Model
  *
- * @property Location $Location
  * @property Artist $Artist
  */
-class Performance extends AppModel {
+class ArtistHour extends AppModel {
 
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -17,13 +16,6 @@ class Performance extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Location' => array(
-			'className' => 'Location',
-			'foreignKey' => 'location_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'Artist' => array(
 			'className' => 'Artist',
 			'foreignKey' => 'artist_id',
