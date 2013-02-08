@@ -50,10 +50,8 @@ CREATE  TABLE IF NOT EXISTS `makingmusic`.`users` (
   `phone` VARCHAR(15) NOT NULL ,
   `contact_preference` TINYINT(1) NULL DEFAULT NULL COMMENT 'Whether or not a user will be sent email notifications.' ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `index644` (`username` ASC) ,
-  UNIQUE INDEX `index645` (`password` ASC) ,
-  UNIQUE INDEX `index646` (`screenname` ASC) ,
   INDEX `index647` (`city_id` ASC) ,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) ,
   CONSTRAINT `constraint665`
     FOREIGN KEY (`city_id` )
     REFERENCES `makingmusic`.`cities` (`id` )
