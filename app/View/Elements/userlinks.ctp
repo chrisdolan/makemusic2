@@ -1,13 +1,12 @@
 <div id="userlinks">
 <?php
-$user = AuthComponent::user();
+$user = AuthComponent::user('screenname');
+
 if ($user) {
-?>
+	echo "Hello, $user";
+	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
 
-You are logged in!
-<?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?>
-
-<?php } else { ?>
+} else { ?>
 
 Who are you?
 <?php echo $this->Html->link('Log In', array('controller' => 'users', 'action' => 'login')); ?>
