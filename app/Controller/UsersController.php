@@ -6,7 +6,7 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-        $this->Auth->allow('login');
+        $this->Auth->allow('login', 'register');
     }
 
 
@@ -23,6 +23,32 @@ class UsersController extends AppController {
 
 	public function logout() {
 		$this->redirect($this->Auth->logout());
+	}
+
+
+	public function register() {
+		if ($this->request->is('post')) {
+			$this->User->contain();
+			if ($this->User->find('first', array('conditions' => array('User.username' => $this->request->data['User']['username'] )))) {
+				$this->User->invalidate('username', 'Sorry, this email address is already taken');
+				$this->set('taken', true);
+				return;
+			}
+			if ($this->User->find('first', array('conditions' => array(
+				'User.screenname' => $this->request->data['User']['screenname'],
+				'User.city_id' => Configure::read('city_id'),
+			)))) {
+				$this->User->invalidate('screenname', 'Sorry, this screenname is already taken');
+				$this->set('taken', true);
+				return;
+			}
+
+			$this->User->create();
+			$this->request->data['User']['city_id'] = Configure::read('city_id');
+			if ($this->User->save($this->request->data)) {
+				$this->redirect('/');
+			}
+		}
 	}
 
 

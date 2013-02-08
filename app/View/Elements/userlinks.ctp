@@ -3,13 +3,11 @@
 $user = AuthComponent::user('screenname');
 
 if ($user) {
-	echo "Hello, $user";
+	echo "Hello, $user ";
 	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
-
-} else { ?>
-
-Who are you?
-<?php echo $this->Html->link('Log In', array('controller' => 'users', 'action' => 'login')); ?>
-
-<?php } ?>
+} else {
+	echo "Who are you? ";
+	echo $this->Html->link('Log In', array('controller' => 'users', 'action' => 'login')) . '&nbsp';
+	echo $this->Html->link('Sign Up ', array('controller' => 'users', 'action' => 'register'));
+} ?>
 </div>
