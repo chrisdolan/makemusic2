@@ -21,22 +21,16 @@
 
 App::uses('AppController', 'Controller');
 
-/**
- * Static content controller
- *
- * Override this controller by placing a copy in controllers directory of an application
- *
- * @package       app.Controller
- * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
- */
+
 class PagesController extends AppController {
 
-/**
- * Controller name
- *
- * @var string
- */
+
 	public $name = 'Pages';
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+        $this->Auth->allow(); //whitelist all by default
+    }
 
 /**
  * This controller does not use a model

@@ -180,3 +180,7 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+
+//XXX TODO this should be pulled from the database via $_SERVER['SERVER_NAME'] or similar
+Configure::write('city_id', 1);
